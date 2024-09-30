@@ -20,10 +20,15 @@ if __name__ == '__main__':
                 datanascita = datetime.strptime(row[9], "%d/%m/%Y").strftime("%Y-%m-%d")
             else:
                 datanascita = None
-            person = (idx, row[2], row[1], row[11], datanascita, row[10], None, row[8])
+            if row[12]:
+                datarilasciotessera = datetime.strptime(row[12], "%d/%m/%Y").strftime("%Y-%m-%d")
+            else:
+                datarilasciotessera = None
+            person = (idx, row[2], row[1], row[11], datanascita, row[10], None, row[8], 'CSI Terra d\'Otranto', row[0], datarilasciotessera,
+                      row[6], row[5], None, row[7], row[14], None)
             people.append(person)
 
-    cur.executemany("INSERT INTO people VALUES(?, ?, ?, ?, ?, ?, ?, ?)", people)
+    cur.executemany("INSERT INTO people VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", people)
 
     con.commit()
 
