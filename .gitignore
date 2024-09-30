@@ -1,4 +1,8 @@
 /.venv/
 .env
-*.db
+*.db*
+/dist
 /__pycache__
+*/__pycache__
+/build
+*.spec

@@ -8,8 +8,7 @@ from PyQt6 import QtSql as qts
 
 from dotenv import load_dotenv
 
-from forms import PersonForm
-
+import forms
 
 class MainWindow(qtw.QMainWindow):
 
@@ -48,7 +47,7 @@ class MainWindow(qtw.QMainWindow):
             )
             sys.exit(1)
         load_dotenv()
-        
+
 
     def init_db(self):
         self.db = qts.QSqlDatabase.addDatabase('QSQLITE')
@@ -94,7 +93,7 @@ class MainWindow(qtw.QMainWindow):
 
 
     def init_form(self):
-        self.person_form = PersonForm(self.people_model)
+        self.person_form = forms.PersonForm(self.people_model)
         self.stack.addWidget(self.person_form)
 
 
