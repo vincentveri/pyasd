@@ -28,5 +28,14 @@ CREATE TABLE "people" (
 	"comunenascita"	TEXT,
 	"provnascita"	TEXT,
 	"codicefiscale"	TEXT,
+	"entetessera"	TEXT,
+	"codicetessera"	TEXT,
+	"datariltessera"	TEXT,
+	"indirizzo"	TEXT,
+	"comune"	TEXT,
+	"tel"	TEXT,
+	"cell"	TEXT,
+	"email"	TEXT,
+	"email2"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
 )
