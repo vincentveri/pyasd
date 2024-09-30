@@ -13,18 +13,18 @@ if __name__ == '__main__':
 
     people = []
 
-    with open('persone.csv') as file:
+    with open('persone.csv', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter="\t")
         for idx, row in enumerate(reader, start=1):
             if row[9]:
                 datanascita = datetime.strptime(row[9], "%d/%m/%Y").strftime("%Y-%m-%d")
             else:
                 datanascita = None
-            if row[12]:
-                datarilasciotessera = datetime.strptime(row[12], "%d/%m/%Y").strftime("%Y-%m-%d")
+            if row[11]:
+                datarilasciotessera = datetime.strptime(row[11], "%d/%m/%Y").strftime("%Y-%m-%d")
             else:
                 datarilasciotessera = None
-            person = (idx, row[2], row[1], row[11], datanascita, row[10], None, row[8], 'CSI Terra d\'Otranto', row[0], datarilasciotessera,
+            person = (idx, row[2], row[1], row[20], datanascita, row[10], None, row[8], 'CSI Terra d\'Otranto', row[0], datarilasciotessera,
                       row[6], row[5], None, row[7], row[14], None)
             people.append(person)
 
