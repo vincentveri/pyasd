@@ -1,9 +1,10 @@
 import sys
+import os
 from PyQt6 import QtWidgets as qtw
 from PyQt6 import QtGui as qtg
 from PyQt6 import QtCore as qtc
 from PyQt6 import QtSql as qts
-
+from dotenv import load_dotenv
 
 class DateDelegate(qtw.QStyledItemDelegate):
 
@@ -23,6 +24,10 @@ class PersonForm(qtw.QWidget):
         self.layout().addRow('Cognome: ', self.cognome)
         self.datanascita = qtw.QDateEdit(calendarPopup=True)
         self.layout().addRow('Data Nascita: ', self.datanascita)
+        self.comunenascita = qtw.QLineEdit()
+        self.layout().addRow('Comune Nascita: ', self.comunenascita)
+        self.provnascita = qtw.QLineEdit()
+        self.layout().addRow('Prov. Nascita: ', self.provnascita)
         self.codicefiscale = qtw.QLineEdit()
         self.layout().addRow('C.F.: ', self.codicefiscale)
 
@@ -61,6 +66,14 @@ class PersonForm(qtw.QWidget):
             people_model.fieldIndex('datanascita')
         )
         self.mapper.addMapping(
+            self.comunenascita,
+            people_model.fieldIndex('comunenascita')
+        )
+        self.mapper.addMapping(
+            self.provnascita,
+            people_model.fieldIndex('provnascita')
+        )
+        self.mapper.addMapping(
             self.codicefiscale,
             people_model.fieldIndex('codicefiscale')
         )
@@ -78,7 +91,7 @@ class PersonForm(qtw.QWidget):
         )
         self.mapper.model().select()
 
-    
+
     def show_person(self, person_index):
         self.mapper.setCurrentIndex(person_index.row())
 
@@ -93,8 +106,10 @@ class MainWindow(qtw.QMainWindow):
         self.stack = qtw.QStackedWidget()
         self.setCentralWidget(self.stack)
 
+        self.init_dotenv()
+
         self.init_db()
-        
+
         self.init_models()
 
         self.init_form()
@@ -109,6 +124,16 @@ class MainWindow(qtw.QMainWindow):
         self.show()
 
 
+    def init_dotenv(self):
+        dotenvfile_exists = os.path.exists('./.env')
+        if dotenvfile_exists == False:
+            qtw.QMessageBox.critical(
+                None, '.env file error',
+                'The file .env doesn\'t exists.'
+            )
+            sys.exit(1)
+        load_dotenv()
+
     def init_db(self):
         self.db = qts.QSqlDatabase.addDatabase('QSQLITE')
         self.db.setDatabaseName('pyasd.db')
@@ -122,7 +147,7 @@ class MainWindow(qtw.QMainWindow):
             )
             sys.exit(1)
 
-        required_tables = {'people'}
+        required_tables = {os.getenv('TBL_PEOPLE')}
         tables = self.db.tables()
         missing_tables = required_tables - set(tables)
         if missing_tables:
