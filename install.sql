@@ -38,4 +38,15 @@ CREATE TABLE "people" (
 	"email"	TEXT,
 	"email2"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT)
-)
+);
+
+CREATE TABLE "transactions" (
+	"id"	INTEGER NOT NULL,
+	"datareg"	TEXT,
+	"descrizione"	TEXT,
+	"importo"	TEXT DEFAULT '0.00',
+	"conto"	TEXT,
+	"numdoc"	TEXT,
+	"id_persona"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
