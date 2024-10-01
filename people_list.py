@@ -80,6 +80,7 @@ class MainWindow(qtw.QMainWindow):
 
 
     def init_models(self):
+        # Persone
         self.people_model = qts.QSqlRelationalTableModel()
         self.people_model.setTable('people')
         self.people_model.setQuery(
@@ -95,23 +96,6 @@ class MainWindow(qtw.QMainWindow):
     def init_form(self):
         self.person_form = forms.PersonForm(self.people_model)
         self.stack.addWidget(self.person_form)
-
-
-    def show_person(self, person_id):
-        query = qts.QSqlQuery(self.db)
-        query.prepare('SELECT * FROM people WHERE id=:id')
-        query.bindValue(':id', person_id)
-        query.exec()
-        query.next()
-        person = {
-            'id': query.value(0),
-            'nome': query.value(1),
-            'cognome': query.value(2),
-            'sesso': query.value(3),
-            'datanascita': query.value(4),
-        }
-        self.person_form.show_person(person)
-        self.stack.setCurrentWidget(self.person_form)
 
 
     def setup_menu(self):
@@ -175,11 +159,6 @@ class MainWindow(qtw.QMainWindow):
         self.people_list.resizeRowsToContents()
 
     
-    def get_id_for_row(self, index):
-        index = index.siblingAtColumn(0)
-        person_id = self.people_list.model().data(index)
-        return person_id
-
 
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
