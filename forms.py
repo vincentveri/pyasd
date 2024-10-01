@@ -7,6 +7,9 @@ class PersonForm(qtw.QWidget):
     def __init__(self, people_model):
         super().__init__()
         self.setLayout(qtw.QFormLayout())
+        self.id = qtw.QLineEdit()
+        self.id.setReadOnly(True)
+        self.layout().addRow('ID: ', self.id)
         self.nome = qtw.QLineEdit()
         self.layout().addRow('Name: ', self.nome)
         self.cognome = qtw.QLineEdit()
@@ -33,6 +36,10 @@ class PersonForm(qtw.QWidget):
 
         self.layout().addRow(self.contatti)
 
+        # Transazioni
+        self.transazioni_list = qtw.QTableView()
+        self.layout().addRow(self.transazioni_list)
+
         self.init_mapper(people_model)
 
 
@@ -41,6 +48,10 @@ class PersonForm(qtw.QWidget):
         self.mapper.setModel(people_model)
         self.mapper.setItemDelegate(
             qts.QSqlRelationalDelegate(self)
+        )
+        self.mapper.addMapping(
+            self.id,
+            people_model.fieldIndex('id')
         )
         self.mapper.addMapping(
             self.nome,
@@ -83,3 +94,15 @@ class PersonForm(qtw.QWidget):
 
     def show_person(self, person_index):
         self.mapper.setCurrentIndex(person_index.row())
+        self.show_transactions(self.id.text())
+
+    def show_transactions(self, id_persona):
+        self.transactions_model = qts.QSqlRelationalTableModel()
+        self.transactions_model.setTable('transactions')
+        self.transactions_model.setQuery(
+            "SELECT * "
+            f"FROM transactions WHERE id_persona = {id_persona}"
+        )
+        self.transazioni_list.setModel(self.transactions_model)
+        self.transazioni_list.resizeColumnsToContents()
+        self.transazioni_list.resizeRowsToContents()
