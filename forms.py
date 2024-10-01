@@ -41,6 +41,12 @@ class PersonForm(qtw.QWidget):
         self.layout().addRow(self.transazioni_list)
 
         self.init_mapper(people_model)
+        self.init_models()
+
+
+    def init_models(self):
+        self.transactions_model = qts.QSqlRelationalTableModel()
+        self.transactions_model.setTable('transactions')
 
 
     def init_mapper(self, people_model):
@@ -97,8 +103,6 @@ class PersonForm(qtw.QWidget):
         self.show_transactions(self.id.text())
 
     def show_transactions(self, id_persona):
-        self.transactions_model = qts.QSqlRelationalTableModel()
-        self.transactions_model.setTable('transactions')
         self.transactions_model.setQuery(
             "SELECT * "
             f"FROM transactions WHERE id_persona = {id_persona}"
